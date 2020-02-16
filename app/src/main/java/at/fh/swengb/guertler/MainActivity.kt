@@ -17,25 +17,26 @@ companion object
 }
     override fun onCreate(savedInstanceState: Bundle?) 
     {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-       
+
+
         val shared_Preferences= getSharedPreferences(packageName, Context.MODE_PRIVATE)
+
 
         if(shared_Preferences.getString(TOKEN,null)!= null)
         {
             val intent = Intent(this, NoteListActivity::class.java)
             startActivity(intent)
         }
-        else
-        {
-            Log.e("Token","No Token found!")
-        }
+
 
 
         login_button.setOnClickListener {
             if(login_username.text.toString().isNotEmpty() and login_password.text.toString().isNotEmpty()) 
             {
+
                 val authRequest =
                     AuthRequest(login_username.text.toString(), login_password.text.toString())
                 login(authRequest,
@@ -48,10 +49,11 @@ companion object
 
                     },
                     error = {
-                        Log.e("Error", it)
+                       // Log.e("Error", it)
                     }
                 )
             }
+
             else 
             {
                 Toast.makeText(this, "You need your username and password", Toast.LENGTH_SHORT).show()
@@ -65,9 +67,12 @@ companion object
         error: (errorMessage: String) -> Unit)
         {
              NoteApi.retrofitService.login(request).enqueue(object: retrofit2.Callback<AuthResponse>{
-                 override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
+                 override fun onFailure(call: Call<AuthResponse>, t: Throwable)
+                 {
                  error("Login failed")
             }
+
+
 
             override fun onResponse(call: Call<AuthResponse>, response: Response<AuthResponse>)
             {
@@ -83,6 +88,11 @@ companion object
                 }
 
             }
+
+
+
         })
+
+
     }
 }

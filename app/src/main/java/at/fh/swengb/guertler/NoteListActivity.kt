@@ -32,6 +32,7 @@ class NoteListActivity : AppCompatActivity()
     }
 
 
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -42,7 +43,8 @@ class NoteListActivity : AppCompatActivity()
         val lastSync = shared_Preferences.getLong(LASTSYNC, 0)
         val token = shared_Preferences.getString(TOKEN, null)
 
-        if (token != null){
+        if (token != null)
+        {
             NoteRepository.getNote(
 
                 token,
@@ -55,10 +57,12 @@ class NoteListActivity : AppCompatActivity()
                     noteAdapter.updateList(NoteRepository.getNoteAll(this))
                 },
                 error = {
-                   // Log.e("Error", it)
+                  Log.e("Error", it)
 
                     noteAdapter.updateList(NoteRepository.getNoteAll(this))
                 })
+
+
             note_recyclerView.layoutManager = StaggeredGridLayoutManager(2,1)
             note_recyclerView.adapter = noteAdapter
 
@@ -67,14 +71,17 @@ class NoteListActivity : AppCompatActivity()
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean
     {
+
         return when(item?.itemId)
         {
+
             R.id.logout -> {
                 val shared_Preferences= getSharedPreferences(packageName, Context.MODE_PRIVATE)
                 shared_Preferences.edit().clear().apply()
                 NoteRepository.clearDb(this)
                 finish()
             true}
+
 
 
             R.id.newnote -> {
@@ -99,7 +106,8 @@ class NoteListActivity : AppCompatActivity()
         super.onActivityResult(requestCode, resultCode, data)
 
 
-        if (requestCode == EXTRA_ADDED_EDITED_RESULT  && resultCode == Activity.RESULT_OK){
+        if (requestCode == EXTRA_ADDED_EDITED_RESULT  && resultCode == Activity.RESULT_OK)
+        {
             noteAdapter.updateList(NoteRepository.getNoteAll(this))
             note_recyclerView.layoutManager = StaggeredGridLayoutManager(2,1)
             note_recyclerView.adapter = noteAdapter

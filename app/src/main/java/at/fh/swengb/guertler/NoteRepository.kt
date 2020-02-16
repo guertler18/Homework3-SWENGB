@@ -9,6 +9,7 @@ object NoteRepository {
 
     fun getNote(token: String, lastSync: Long, success:(noteResponse: NotesResponse)->Unit,error:(errorMessage:String)->Unit)
     {
+
         NoteApi.retrofitService.notes(token, lastSync).enqueue(object : Callback<NotesResponse>{
 
             override fun onFailure(call: Call<NotesResponse>, t: Throwable)
@@ -16,35 +17,55 @@ object NoteRepository {
                 error("Call failed")
             }
 
+
+
+
+
             override fun onResponse(call: Call<NotesResponse>, response: Response<NotesResponse>) {
                 val responseBody = response.body()
                 if (response.isSuccessful && responseBody != null)
                 {
                     success(responseBody)
+
+
                 } else {
+
                     error("There is something wrong")
                 }
+
+
             }
         })
+
+
     }
 
     fun NoteUpload (token: String, Uploaded_Note: Note, success: (note: Note)->Unit, error: (errorMessage: String)->Unit)
     {
+
         NoteApi.retrofitService.addupdateNote(token, Uploaded_Note).enqueue(object : Callback<Note>{
+
+
+
+            override fun onResponse(call: Call<Note>, response: Response<Note>) {
+                val responseBody = response.body()
+                if (response.isSuccessful && responseBody != null)
+                {
+                    success(responseBody)
+                }
+                else
+                {
+                    error("There is something wrong " + response.message())
+                }
+            }
 
             override fun onFailure(call: Call<Note>, t: Throwable) {
                 error("Call failed! " + t.localizedMessage)
             }
 
-            override fun onResponse(call: Call<Note>, response: Response<Note>) {
-                val responseBody = response.body()
-                if (response.isSuccessful && responseBody != null) {
-                    success(responseBody)
-                } else {
-                    error("There is something wrong " + response.message())
-                }
-            }
         }
+
+
         )
     }
 

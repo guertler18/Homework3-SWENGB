@@ -20,14 +20,20 @@ class AddEditNoteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
+
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_edit_note)
 
+
+
         val extra: String? = intent.getStringExtra(NoteListActivity.NOTEiD)
 
-        if(extra != null){
+        if(extra != null)
+        {
             val note:Note? = NoteRepository.getNoteById(this, extra)
-            if(note != null) {
+            if(note != null)
+            {
                 edit_title.setText(note.title)
                 edit_text.setText(note.text)
             }
@@ -42,15 +48,15 @@ class AddEditNoteActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean
     {
-        return when(item?.itemId) {
+        return when(item?.itemId)
+        {
             R.id.savenote -> {
 
                 val extra: String? = intent.getStringExtra(NoteListActivity.NOTEiD)
                 val shared_Preferences= getSharedPreferences(packageName, Context.MODE_PRIVATE)
                 val token = shared_Preferences.getString(TOKEN, null)
 
-                if (
-                    (extra != null) &&
+                if ((extra != null) &&
                     (edit_text.text.toString().isNotEmpty() || edit_title.text.toString().isNotEmpty()) &&
                     (token != null))
                 {
@@ -72,7 +78,8 @@ class AddEditNoteActivity : AppCompatActivity() {
                     setResult(Activity.RESULT_OK, resultIntent)
                     finish()
                 }
-                else {
+                else
+                {
                     Toast.makeText(this, this.getString(R.string.fill_message) , Toast.LENGTH_SHORT).show()
                 }
                 true
